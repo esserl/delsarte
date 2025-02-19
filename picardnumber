@@ -1,3 +1,7 @@
+//The function DelsartePicard returns the Picard number of a Delsarte surface in a weighted P^3 given the 
+//matrix (over Q) containing the exponents.  The DelsartePicardVerbose function provides a readable summary of results.
+//The program assumes the input matrix will actually produce a klt, well-formed hypersurface.
+
 function DelsartePicard(A) //Input 4x4 matrix of equation (over Q).  Program assumes the surface is klt and well-formed
 T := Cputime();
 Q := Rationals();
