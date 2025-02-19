@@ -1,0 +1,72 @@
+function DelsartePicard(A) //Input 4x4 matrix of equation (over Q).  Program assumes the surface is klt and well-formed
+T := Cputime();
+Q := Rationals();
+v := Matrix(Q,4,1,[1,1,1,1]);
+q := A^(-1)*v;
+charges := ElementToSequence(q); //Charges vector for ambient weighted projective space
+m := Lcm([Denominator(charge): charge in charges]); //Degree of surface in wps
+d := Lcm([Denominator(b): b in ElementToSequence(A^(-1))]); //Degree of Fermat surface Y we need to quotient
+weights := [Floor(m*charge): charge in charges]; //weights of weighted projective space
+a := m - &+weights; //a for amplitude of the canonical bundle
+if a ge 0 then
+    h0 := #MonomialsOfWeightedDegree(PolynomialRing(Q,weights),a); //h^0(X,KX)
+else
+    h0 := 0;
+end if;
+B := d*A^(-1);
+Mprimelat := StandardLattice(4); //The lattice M'
+Mlat := sub< Mprimelat | [B[1],B[2],B[3],B[4]] >; //The lattice M
+Mtwoprimelat := sub< Mprimelat | [[d,0,0,0],[0,d,0,0],[0,0,d,0],[0,0,0,d]] >; //The lattice M''
+L := sub< Mprimelat | [[d,0,0,0],[0,d,0,0],[0,0,d,0],[0,0,0,d],
+[1,0,0,d-1],[0,1,0,d-1],[0,0,1,d-1]] >; //lattice of points in M' "on slices" adding up to multiple of d
+chargroup, pi := L/Mtwoprimelat; //dual of toric automorphism group of Fermat surface
+Aut := L meet Mlat;
+group,i := sub<chargroup | [pi(Aut.1),pi(Aut.2),pi(Aut.3),pi(Aut.4)]>; //(Dual of) toric automorphism group of surface
+trange := [t: t in [0 .. d-1]| Gcd(d,t) eq 1];
+count1 := 0; //all Gamma-invariant interior points of cube
+count2 := 0; //Gamma-invariant points of cube corresponding to Hodge classes
+for g in group do
+    algebraic := true;
+    rep := Representation([pi([1,0,0,d-1]),pi([0,1,0,d-1]),pi([0,0,1,d-1])],i(g));
+    rep := [rep[1] mod d, rep[2] mod d, rep[3] mod d, (-rep[1]-rep[2]-rep[3]) mod d];
+    if 0 in rep then
+	algebraic := false;
+    else
+	count1 := count1 + 1;
+        for t in trange do
+	    if &+[(t*rep[i]) mod d: i in [1 .. 4]]/d ne 2 then
+	        algebraic := false;
+	        break;
+	    end if;
+        end for;
+    end if;
+    if algebraic eq true then
+	count2 := count2 + 1;
+    end if;
+end for;
+lambda := count1 - count2; //The Lefschetz number of X
+if lambda eq 2*h0 then
+    maximal := true;
+else
+    maximal := false;
+end if;
+return d,m,weights,lambda,h0,maximal,group, Cputime(T);
+end function;
+
+
+function DelsartePicardVerbose(A)
+d,m,weights,lambda,h0,maximal,group := DelsartePicard(A);
+print "This matrix corresponds to a surface X of degree", m, "in
+the weighted projective space with weights", weights;
+print "X has h^0(X,K_X) =", h0, ", Lefschetz number", lambda, ", and 
+toric automorphism group:", group;
+print "Maximal Picard number:", maximal;
+return "Done";
+end function;
+
+
+
+//Example Application
+Q := Rationals();
+A := Matrix(Q,4,4,[5,1,0,0, 1,5,0,0, 0,0,5,1, 0,0,1,5]); //Matrix of Delsarte surface
+DelsartePicardVerbose(A);
