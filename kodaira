@@ -7,10 +7,6 @@
 // more generally Newton non-degenerate)
 //////////////////////////////////////////////////////////////////////
 
-//Note: can use the command Resolution(ResolveLinearSystem(Xdiv));, which I think
-//automatically handles finding the Groebner fan, but it's very slow.
-//Going to change it to just resolving P for now: this will still work for quasismooth ones (I think)
-
 Q := Rationals();
 
 //This version only works for quasismooth hypersurfaces!!!
