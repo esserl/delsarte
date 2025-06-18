@@ -61,10 +61,11 @@ end function;
 function DelsartePicardVerbose(A)
 d,m,weights,lambda,h0,maximal,group := DelsartePicard(A);
 print "This matrix corresponds to a surface X of degree", m, "in
-the weighted projective space with weights", weights;
+the weighted projective space with weights", weights, "which is a
+quotient of the Fermat surface of degree", d, ".";
 print "X has h^0(X,K_X) =", h0, ", Lefschetz number", lambda, ", and 
 toric automorphism group:", group;
-print "Maximal Picard number:", maximal;
+print "X has maximal Picard number:", maximal;
 return "Done";
 end function;
 
