@@ -4,4 +4,4 @@ The MAGMA code in this repository provides tools for calculating the Lefschetz n
 
 The function "DelsartePicard" computes the Lefschetz number of a well-formed, klt, Delsarte surface inside of weighted projective 3-space.  This implements an extension of an algorithm of Shioda, by expressing a given Delsarte surface as a quotient of a Fermat surface.  The program assumes the input is well-formed and klt.
 
-The companion function "matrix_potentials" can be used to generate quasismooth Delsarte equations matching a given degree and weights.
+The companion function "matrix_potentials" can be used to generate quasismooth Delsarte polynomials matching a given degree and weights.
